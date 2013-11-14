@@ -13,14 +13,7 @@ keys = response.body
 node[:deploy].each do |app_name, deploy|
 
 
-    script "set_permissions" do
-        interpreter "bash"
-        user "root"
-        cwd "#{deploy[:deploy_to]}/current"
-        code <<-EOH
-        mkdir thisIsNew
-        EOH
-    end
+
 
 
 
