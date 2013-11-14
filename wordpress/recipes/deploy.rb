@@ -25,7 +25,7 @@ node[:deploy].each do |app_name, deploy|
     end
 
 
-    directory "/srv/www/mba/foobar" do
+    directory "#{deploy[:deploy_to]}/current/foobar" do
       mode "0777"
       action :create
       recursive true
