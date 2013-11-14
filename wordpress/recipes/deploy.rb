@@ -24,13 +24,10 @@ node[:deploy].each do |app_name, deploy|
         end
     end
 
-    script "set_permissions" do
-        interpreter "bash"
-        user "root"
-        cwd "#{deploy[:deploy_to]}/current"
-        code <<-EOH
-        mkdir testMkdir
-        EOH
+
+    directory "#{deploy[:deploy_to]}/current" do
+        mode 0777
+        action :create
     end
 
     script "install_composer" do
