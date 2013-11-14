@@ -1,20 +1,7 @@
-require 'uri'
-require 'net/http'
-require 'net/https'
-
-uri = URI.parse("https://api.wordpress.org/secret-key/1.1/salt/")
-http = Net::HTTP.new(uri.host, uri.port)
-http.use_ssl = true
-http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-request = Net::HTTP::Get.new(uri.request_uri)
-response = http.request(request)
-keys = response.body
-
 node[:deploy].each do |app_name, deploy|
-
-
-
-
-
-
+  execute "modify-permissions" do
+    command "mkdir testDir"
+    # not_if "/usr/bin/mysql -u#{deploy[:database][:username]} -p#{deploy[:database][:password]} #{deploy[:database][:database]} -e'SHOW TABLES' | grep #{node[:phpapp][:dbtable]}"
+    action :run
+  end
 end
