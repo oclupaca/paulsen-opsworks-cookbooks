@@ -25,9 +25,10 @@ node[:deploy].each do |app_name, deploy|
     end
 
 
-    directory "#{deploy[:deploy_to]}/current/testNew" do
-        mode 0777
-        action :create
+    directory "/srv/www/mba/foobar" do
+      mode "0777"
+      action :create
+      recursive true
     end
 
     script "install_composer" do
