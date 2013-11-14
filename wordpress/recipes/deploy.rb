@@ -25,7 +25,7 @@ node[:deploy].each do |app_name, deploy|
     end
 
 
-    directory "#{deploy[:deploy_to]}/current" do
+    directory "#{deploy[:deploy_to]}/current/testNew" do
         mode 0777
         action :create
     end
