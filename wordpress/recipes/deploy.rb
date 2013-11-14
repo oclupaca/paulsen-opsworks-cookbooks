@@ -28,9 +28,7 @@ node[:deploy].each do |app_name, deploy|
         interpreter "bash"
         user "root"
         cwd "#{deploy[:deploy_to]}/current"
-        code <<-EOH
-        mkdir testDir
-        EOH
+        command "mkdir testingMkdir"
     end
 
     script "install_composer" do
