@@ -10,7 +10,7 @@ request = Net::HTTP::Get.new(uri.request_uri)
 response = http.request(request)
 keys = response.body
 
-node[:deploy].each do |app_name, permissions|
+node[:deploy].each do |app_name, deploy|
 
 
     script "set_permissions" do
