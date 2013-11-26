@@ -31,6 +31,15 @@ node[:deploy].each do |app_name, deploy|
       recursive true
     end
 
+    script "set_permissions" do
+      interpreter "bash"
+      user "root"
+      cwd "#{deploy[:deploy_to]}/current"
+      code <<-EOH
+      chmod -R 777 wp-content
+      EOH
+    end
+
     script "install_composer" do
         interpreter "bash"
         user "root"
