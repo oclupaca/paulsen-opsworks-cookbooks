@@ -50,24 +50,24 @@ node[:deploy].each do |app_name, deploy|
         EOH
     end
 
-    template "#{deploy[:deploy_to]}/current/wp-config.php" do
-        source "wp-config.php.erb"
-        mode 0660
-        group deploy[:group]
+    # template "#{deploy[:deploy_to]}/current/wp-config.php" do
+    #     source "wp-config.php.erb"
+    #     mode 0660
+    #     group deploy[:group]
 
-        if platform?("ubuntu")
-          owner "www-data"
-        elsif platform?("amazon")
-          owner "apache"
-        end
+    #     if platform?("ubuntu")
+    #       owner "www-data"
+    #     elsif platform?("amazon")
+    #       owner "apache"
+    #     end
 
-        variables(
-            :database   => (deploy[:database][:database] rescue nil),
-            :user       => (deploy[:database][:username] rescue nil),
-            :password   => (deploy[:database][:password] rescue nil),
-            :host       => (deploy[:database][:host] rescue nil),
-            :keys       => (keys rescue nil)
-        )
-    end
+    #     variables(
+    #         :database   => (deploy[:database][:database] rescue nil),
+    #         :user       => (deploy[:database][:username] rescue nil),
+    #         :password   => (deploy[:database][:password] rescue nil),
+    #         :host       => (deploy[:database][:host] rescue nil),
+    #         :keys       => (keys rescue nil)
+    #     )
+    # end
 
 end
