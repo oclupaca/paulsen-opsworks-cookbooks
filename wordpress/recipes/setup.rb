@@ -1,6 +1,5 @@
 packages = [
-	'glusterfs',
-	'glusterfs-fuse'
+	'libphp-phpmailer'
 ]
 
 packages.each do |pkg|
@@ -9,4 +8,4 @@ packages.each do |pkg|
   end
 end
 
-include_recipe 'wordpress::bind_mounts'
+# include_recipe 'wordpress::bind_mounts'
