@@ -36,6 +36,14 @@ node[:deploy].each do |app_name, deploy|
         end
     end
 
+    script "set_timezone" do
+      interpreter "bash"
+      user "root"
+      code <<-EOH
+      cp /usr/share/zoneinfo/America/Chicago /etc/localtime
+      EOH
+    end
+
     script "install_composer" do
         interpreter "bash"
         user "root"
