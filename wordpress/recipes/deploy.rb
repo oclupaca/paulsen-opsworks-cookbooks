@@ -25,11 +25,7 @@ node[:deploy].each do |app_name, deploy|
     end
 
 
-    def directory_exists?(directory)
-      File.directory?("#{deploy[:deploy_to]}/current")
-    end
-
-    if directory_exists
+    if File.directory?("#{deploy[:deploy_to]}/current")
         script "set_permissions" do
           interpreter "bash"
           user "root"
