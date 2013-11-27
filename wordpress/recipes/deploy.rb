@@ -25,19 +25,19 @@ node[:deploy].each do |app_name, deploy|
     end
 
 
-    directory "#{deploy[:deploy_to]}/current/foobar" do
-      mode "0777"
-      action :create
-      recursive true
+    def directory_exists?(directory)
+      File.directory?("#{deploy[:deploy_to]}/current")
     end
 
-    script "set_permissions" do
-      interpreter "bash"
-      user "root"
-      cwd "#{deploy[:deploy_to]}/current"
-      code <<-EOH
-      sudo chown -R apache wp-content
-      EOH
+    if directory_exists
+        script "set_permissions" do
+          interpreter "bash"
+          user "root"
+          cwd "#{deploy[:deploy_to]}/current"
+          code <<-EOH
+          sudo chown -R apache wp-content
+          EOH
+        end
     end
 
     script "install_composer" do
