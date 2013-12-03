@@ -70,7 +70,8 @@ node[:deploy].each do |app_name, deploy|
             :user       => (deploy[:database][:username] rescue nil),
             :password   => (deploy[:database][:password] rescue nil),
             :host       => (deploy[:database][:host] rescue nil),
-            :keys       => (keys rescue nil)
+            :keys       => (keys rescue nil),
+            :wp_cache   => (deploy[:wp_cache] rescue nil)
         )
     end
 
