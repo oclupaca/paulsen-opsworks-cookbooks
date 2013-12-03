@@ -32,6 +32,7 @@ node[:deploy].each do |app_name, deploy|
           cwd "#{deploy[:deploy_to]}/current"
           code <<-EOH
           sudo chown -R apache wp-content
+          sudo chown apache .htaccess
           EOH
         end
     end
