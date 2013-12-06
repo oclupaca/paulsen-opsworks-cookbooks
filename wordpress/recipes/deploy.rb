@@ -67,12 +67,14 @@ node[:deploy].each do |app_name, deploy|
         end
 
         variables(
-            :database   => (deploy[:database][:database] rescue nil),
-            :user       => (deploy[:database][:username] rescue nil),
-            :password   => (deploy[:database][:password] rescue nil),
-            :host       => (deploy[:database][:host] rescue nil),
+            # :database   => (deploy[:database][:database] rescue nil),
+            :database   => (app_name rescue nil),
+            :user       => (rds[:username] rescue nil),
+            :password   => (rds[:password] rescue nil),
+            :host       => (rds[:host] rescue nil),
             :keys       => (keys rescue nil),
-            :wp_cache   => (deploy[:wp_cache] rescue nil)
+            :wp_cache   => (deploy[:wp_cache] rescue nil),
+            :foo   => (foo rescue nil)
         )
     end
 
