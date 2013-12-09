@@ -26,16 +26,29 @@ node[:deploy].each do |app_name, deploy|
 
 
     if File.directory?("#{deploy[:deploy_to]}/current")
-        script "set_permissions" do
-          interpreter "bash"
-          user "root"
-          cwd "#{deploy[:deploy_to]}/current"
-          code <<-EOH
-          sudo chown -R apache wp-content
-          sudo chown apache .htaccess
-          EOH
+        if Dir.exist? "#{deploy[:deploy_to]}/current/wp-content"
+            script "set_permissions_wp-content" do
+              interpreter "bash"
+              user "root"
+              cwd "#{deploy[:deploy_to]}/current"
+              code <<-EOH
+              sudo chown -R apache wp-content
+              EOH
+            end
+        end
+
+        if File.exist? "#{deploy[:deploy_to]}/current/.htaccess"
+            script "set_permissions_htaccess" do
+              interpreter "bash"
+              user "root"
+              cwd "#{deploy[:deploy_to]}/current"
+              code <<-EOH
+              sudo chown apache .htaccess
+              EOH
+            end
         end
     end
+
 
     # script "set_timezone" do
     #   interpreter "bash"
