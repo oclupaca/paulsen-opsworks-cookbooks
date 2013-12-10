@@ -37,7 +37,7 @@ node[:deploy].each do |app_name, deploy|
             end
         end
 
-        if File.exist? "#{deploy[:deploy_to]}/current/.htaccess"
+        if Pathname.exist? "#{deploy[:deploy_to]}/current/.htaccess"
             script "set_permissions_htaccess" do
               interpreter "bash"
               user "root"
