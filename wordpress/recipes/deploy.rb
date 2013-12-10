@@ -26,7 +26,7 @@ node[:deploy].each do |app_name, deploy|
 
 
     if File.directory?("#{deploy[:deploy_to]}/current")
-        if Pathname.exist? "#{deploy[:deploy_to]}/current/wp-content"
+        if File.exist? "#{deploy[:deploy_to]}/current/wp-content"
             script "set_permissions_wp-content" do
               interpreter "bash"
               user "root"
@@ -37,7 +37,7 @@ node[:deploy].each do |app_name, deploy|
             end
         end
 
-        if Pathname.exist? "#{deploy[:deploy_to]}/current/.htaccess"
+        if File.exist? "#{deploy[:deploy_to]}/current/.htaccess"
             script "set_permissions_htaccess" do
               interpreter "bash"
               user "root"
