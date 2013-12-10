@@ -12,82 +12,84 @@ keys = response.body
 
 node[:deploy].each do |app_name, deploy|
 
-    template "#{deploy[:deploy_to]}/current/composer.json" do
-        source "composer.json.erb"
-        mode 0660
-        group deploy[:group]
-
-        if platform?("ubuntu")
-          owner "www-data"
-        elsif platform?("amazon")
-          owner "apache"
-        end
-    end
-
-
     if File.directory?("#{deploy[:deploy_to]}/current")
-        if File.exist? "#{deploy[:deploy_to]}/current/wp-content"
-            script "set_permissions_wp-content" do
-              interpreter "bash"
-              user "root"
-              cwd "#{deploy[:deploy_to]}/current"
-              code <<-EOH
-              sudo chown -R apache wp-content
-              EOH
+
+        template "#{deploy[:deploy_to]}/current/composer.json" do
+            source "composer.json.erb"
+            mode 0660
+            group deploy[:group]
+
+            if platform?("ubuntu")
+              owner "www-data"
+            elsif platform?("amazon")
+              owner "apache"
             end
         end
 
-        if File.exist? "#{deploy[:deploy_to]}/current/.htaccess"
-            script "set_permissions_htaccess" do
-              interpreter "bash"
-              user "root"
-              cwd "#{deploy[:deploy_to]}/current"
-              code <<-EOH
-              sudo chown apache .htaccess
-              EOH
+
+        if File.directory?("#{deploy[:deploy_to]}/current")
+            if File.exist? "#{deploy[:deploy_to]}/current/wp-content"
+                script "set_permissions_wp-content" do
+                  interpreter "bash"
+                  user "root"
+                  cwd "#{deploy[:deploy_to]}/current"
+                  code <<-EOH
+                  sudo chown -R apache wp-content
+                  EOH
+                end
+            end
+
+            if File.exist? "#{deploy[:deploy_to]}/current/.htaccess"
+                script "set_permissions_htaccess" do
+                  interpreter "bash"
+                  user "root"
+                  cwd "#{deploy[:deploy_to]}/current"
+                  code <<-EOH
+                  sudo chown apache .htaccess
+                  EOH
+                end
             end
         end
-    end
 
 
-    # script "set_timezone" do
-    #   interpreter "bash"
-    #   user "root"
-    #   code <<-EOH
-    #   cp /usr/share/zoneinfo/America/Chicago /etc/localtime
-    #   EOH
-    # end
+        # script "set_timezone" do
+        #   interpreter "bash"
+        #   user "root"
+        #   code <<-EOH
+        #   cp /usr/share/zoneinfo/America/Chicago /etc/localtime
+        #   EOH
+        # end
 
-    script "install_composer" do
-        interpreter "bash"
-        user "root"
-        cwd "#{deploy[:deploy_to]}/current"
-        code <<-EOH
-        curl -s https://getcomposer.org/installer | php
-        php composer.phar install
-        EOH
-    end
-
-    template "#{deploy[:deploy_to]}/current/aws-config.php" do
-        source "aws-config.php.erb"
-        mode 0660
-        group deploy[:group]
-
-        if platform?("ubuntu")
-          owner "www-data"
-        elsif platform?("amazon")
-          owner "apache"
+        script "install_composer" do
+            interpreter "bash"
+            user "root"
+            cwd "#{deploy[:deploy_to]}/current"
+            code <<-EOH
+            curl -s https://getcomposer.org/installer | php
+            php composer.phar install
+            EOH
         end
 
-        variables(
-            # :database   => (deploy[:database][:database] rescue nil),
-            :database   => (app_name rescue nil),
-            :user       => (deploy[:database][:username] rescue nil),
-            :password   => (deploy[:database][:password] rescue nil),
-            :host       => (node[:rdsendpoint] rescue nil),
-            :keys       => (keys rescue nil),
-            :wp_cache   => (deploy[:wp_cache] rescue nil)
-        )
-    end
+        template "#{deploy[:deploy_to]}/current/aws-config.php" do
+            source "aws-config.php.erb"
+            mode 0660
+            group deploy[:group]
 
+            if platform?("ubuntu")
+              owner "www-data"
+            elsif platform?("amazon")
+              owner "apache"
+            end
+
+            variables(
+                # :database   => (deploy[:database][:database] rescue nil),
+                :database   => (app_name rescue nil),
+                :user       => (deploy[:database][:username] rescue nil),
+                :password   => (deploy[:database][:password] rescue nil),
+                :host       => (node[:rdsendpoint] rescue nil),
+                :keys       => (keys rescue nil),
+                :wp_cache   => (deploy[:wp_cache] rescue nil)
+            )
+        end
+    end
 end
