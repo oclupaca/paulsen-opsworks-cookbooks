@@ -27,6 +27,7 @@ node[:deploy].each do |app_name, deploy|
 
     if File.directory?("#{deploy[:deploy_to]}/current")
         if File.exist? "#{deploy[:deploy_to]}/current/wp-content"
+            Chef::Log.info('Paulsen Wordpress - chowning wp-content')
             script "set_permissions_wp-content" do
               interpreter "bash"
               user "root"
@@ -35,9 +36,12 @@ node[:deploy].each do |app_name, deploy|
               sudo chown -R apache wp-content
               EOH
             end
+            Chef::Log.info('Paulsen Wordpress - done chowning wp-content')
+
         end
 
         if File.exist? "#{deploy[:deploy_to]}/current/.htaccess"
+            Chef::Log.info('Paulsen Wordpress - chowning .htaccess')
             script "set_permissions_htaccess" do
               interpreter "bash"
               user "root"
@@ -46,6 +50,7 @@ node[:deploy].each do |app_name, deploy|
               sudo chown apache .htaccess
               EOH
             end
+            Chef::Log.info('Paulsen Wordpress - chowning .htaccess')
         end
     end
 
@@ -69,6 +74,7 @@ node[:deploy].each do |app_name, deploy|
     end
 
     template "#{deploy[:deploy_to]}/current/aws-config.php" do
+        Chef::Log.info('Paulsen Wordpress - creating aws-config ')
         source "aws-config.php.erb"
         mode 0660
         group deploy[:group]
