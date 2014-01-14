@@ -24,12 +24,11 @@ node[:deploy].each do |app_name, deploy|
         end
     end
 
-    Chef::Log.info("Paulsen Wordpress - wridableDirs.length is #{deploy[:writableDirs]}");
-    # if deploy[:writableDirs].length
-    # end
-    myDirs = ["wp-content", "wp-admin"]
+    Chef::Log.info("Paulsen Wordpress - wridableDirs.length is #{deploy[:writableDirs].length}");
+    # myDirs = ["wp-content", "wp-admin"]
+    myDirs = deploy[:writableDirs]
 
-    if defined?myDirs
+    if defined?myDirs && && myDirs.length > 0
       myDirs.each do |dir_name|
         Chef::Log.info("Paulsen Wordpress - CHOWN #{dir_name}")
 
