@@ -25,20 +25,40 @@ node[:deploy].each do |app_name, deploy|
     end
 
 
-    if File.directory?("#{deploy[:deploy_to]}/current")
-        if File.exist? "#{deploy[:deploy_to]}/current/wp-content"
-            Chef::Log.info('Paulsen Wordpress - chowning wp-content')
-            script "set_permissions_wp-content" do
-              interpreter "bash"
-              user "root"
-              cwd "#{deploy[:deploy_to]}/current"
-              code <<-EOH
-              sudo chown -R apache #{deploy[:writableDirs]}
-              EOH
-            end
-            Chef::Log.info("Paulsen Wordpress - done chowning #{deploy[:writableDirs]}")
+    node[:deploy][:writableDirs].each do |dir_name|
 
-        end
+      if File.directory?("#{deploy[:deploy_to]}/current")
+
+          if File.exist? "#{deploy[:deploy_to]}/current/#{dir_name}"
+              Chef::Log.info("Paulsen Wordpress - chowning #{dir_name}")
+              script "set_permissions_wp-content" do
+                interpreter "bash"
+                user "root"
+                cwd "#{deploy[:deploy_to]}/current"
+                code <<-EOH
+                sudo chown -R apache #{dir_name}
+                EOH
+              end
+              Chef::Log.info("Paulsen Wordpress - done chowning #{dir_name}")
+          end
+
+      end
+
+    end
+
+    if File.directory?("#{deploy[:deploy_to]}/current")
+        # if File.exist? "#{deploy[:deploy_to]}/current/wp-content"
+        #     Chef::Log.info('Paulsen Wordpress - chowning wp-content')
+        #     script "set_permissions_wp-content" do
+        #       interpreter "bash"
+        #       user "root"
+        #       cwd "#{deploy[:deploy_to]}/current"
+        #       code <<-EOH
+        #       sudo chown -R apache #{deploy[:writableDirs]}
+        #       EOH
+        #     end
+        #     Chef::Log.info("Paulsen Wordpress - done chowning #{deploy[:writableDirs]}")
+        # end
 
         if File.exist? "#{deploy[:deploy_to]}/current/.htaccess"
             Chef::Log.info('Paulsen Wordpress - chowning .htaccess')
@@ -53,6 +73,8 @@ node[:deploy].each do |app_name, deploy|
             Chef::Log.info('Paulsen Wordpress - chowning .htaccess')
         end
     end
+
+
 
 
     # script "set_timezone" do
