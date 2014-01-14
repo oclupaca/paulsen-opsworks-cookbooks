@@ -24,6 +24,9 @@ node[:deploy].each do |app_name, deploy|
         end
     end
 
+    Chef::Log.info("Paulsen Wordpress - wridableDirs.length is #{deploy[:writableDirs]}");
+    # if deploy[:writableDirs].length
+    # end
     myDirs = ["wp-content", "wp-admin"]
 
     if defined?myDirs
