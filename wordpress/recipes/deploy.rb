@@ -33,10 +33,10 @@ node[:deploy].each do |app_name, deploy|
               user "root"
               cwd "#{deploy[:deploy_to]}/current"
               code <<-EOH
-              sudo chown -R apache wp-content
+              sudo chown -R apache #{deploy[:writableDirs]}
               EOH
             end
-            Chef::Log.info('Paulsen Wordpress - done chowning wp-content')
+            Chef::Log.info("Paulsen Wordpress - done chowning #{deploy[:writableDirs]}")
 
         end
 
