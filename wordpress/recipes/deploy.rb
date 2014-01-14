@@ -27,7 +27,7 @@ node[:deploy].each do |app_name, deploy|
     myDirs = ["wp-content", "wp-admin"]
 
     if defined?myDirs
-      deploy[:writableDirs].each do |dir_name|
+      myDirs.each do |dir_name|
         Chef::Log.info("Paulsen Wordpress - CHOWN #{dir_name}")
 
         if File.directory?("#{deploy[:deploy_to]}/current")
