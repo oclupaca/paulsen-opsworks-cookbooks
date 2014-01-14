@@ -24,7 +24,6 @@ node[:deploy].each do |app_name, deploy|
         end
     end
 
-    Chef::Log.info("Paulsen Wordpress - wridableDirs.length is #{deploy[:writableDirs].length}");
     # myDirs = ["wp-content", "wp-admin"]
     myDirs = deploy[:writableDirs]
 
