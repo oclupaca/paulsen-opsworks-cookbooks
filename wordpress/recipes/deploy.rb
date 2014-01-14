@@ -28,7 +28,7 @@ node[:deploy].each do |app_name, deploy|
     # myDirs = ["wp-content", "wp-admin"]
     myDirs = deploy[:writableDirs]
 
-    if defined?myDirs && && myDirs.length > 0
+    if defined?myDirs && myDirs.length > 0
       myDirs.each do |dir_name|
         Chef::Log.info("Paulsen Wordpress - CHOWN #{dir_name}")
 
