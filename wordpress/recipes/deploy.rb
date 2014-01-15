@@ -12,17 +12,22 @@ keys = response.body
 
 node[:deploy].each do |app_name, deploy|
 
-    template "#{deploy[:deploy_to]}/current/composer.json" do
-        source "composer.json.erb"
-        mode 0660
-        group deploy[:group]
+    if File.directory?("#{deploy[:deploy_to]}/current")
+      template "#{deploy[:deploy_to]}/current/composer.json" do
+          source "composer.json.erb"
+          mode 0660
+          group deploy[:group]
 
-        if platform?("ubuntu")
-          owner "www-data"
-        elsif platform?("amazon")
-          owner "apache"
-        end
+          if platform?("ubuntu")
+            owner "www-data"
+          elsif platform?("amazon")
+            owner "apache"
+          end
+      end
     end
+
+
+
 
     # myDirs = ["wp-content", "wp-admin"]
     myDirs = deploy[:writableDirs]
