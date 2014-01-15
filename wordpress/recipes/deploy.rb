@@ -63,7 +63,6 @@ node[:deploy].each do |app_name, deploy|
       myDirs.each do |dir_name|
         Chef::Log.info("Paulsen Wordpress - CHOWN #{dir_name}")
 
-        if File.directory?("#{deploy[:deploy_to]}/current")
 
             if File.exist? "#{deploy[:deploy_to]}/current/#{dir_name}"
                 Chef::Log.info("Paulsen Wordpress - chowning #{deploy[:deploy_to]}/current/#{dir_name}")
@@ -78,10 +77,11 @@ node[:deploy].each do |app_name, deploy|
                 Chef::Log.info("Paulsen Wordpress - done chowning #{deploy[:deploy_to]}/current/#{dir_name}")
             end
 
-        end
 
       end
     end
   end
+
+
 
 end
