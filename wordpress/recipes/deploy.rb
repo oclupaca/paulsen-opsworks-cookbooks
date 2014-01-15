@@ -27,31 +27,33 @@ node[:deploy].each do |app_name, deploy|
     # myDirs = ["wp-content", "wp-admin"]
     myDirs = deploy[:writableDirs]
 
-    if defined?myDirs && myDirs.length
-      myDirs.each do |dir_name|
-        Chef::Log.info("Paulsen Wordpress - CHOWN #{dir_name}")
+    if defined?myDirs
+      if myDirs.kind_of?(Array)
+        Chef::Log.info("Paulsen Wordpress - wridableDirs.length is #{deploy[:writableDirs].length}");
+        myDirs.each do |dir_name|
+          Chef::Log.info("Paulsen Wordpress - CHOWN #{dir_name}")
 
-        if File.directory?("#{deploy[:deploy_to]}/current")
+          if File.directory?("#{deploy[:deploy_to]}/current")
 
-            if File.exist? "#{deploy[:deploy_to]}/current/#{dir_name}"
-                Chef::Log.info("Paulsen Wordpress - chowning #{dir_name}")
-                script "set_permissions_wp-content" do
-                  interpreter "bash"
-                  user "root"
-                  cwd "#{deploy[:deploy_to]}/current"
-                  code <<-EOH
-                  sudo chown -R apache #{dir_name}
-                  EOH
-                end
-                Chef::Log.info("Paulsen Wordpress - done chowning #{dir_name}")
-            end
+              if File.exist? "#{deploy[:deploy_to]}/current/#{dir_name}"
+                  Chef::Log.info("Paulsen Wordpress - chowning #{dir_name}")
+                  script "set_permissions_wp-content" do
+                    interpreter "bash"
+                    user "root"
+                    cwd "#{deploy[:deploy_to]}/current"
+                    code <<-EOH
+                    sudo chown -R apache #{dir_name}
+                    EOH
+                  end
+                  Chef::Log.info("Paulsen Wordpress - done chowning #{dir_name}")
+              end
+
+          end
 
         end
-
       end
-    else
-      Chef::Log.info("This site does not have writable dirs defined")
     end
+
 
     if File.directory?("#{deploy[:deploy_to]}/current")
         # if File.exist? "#{deploy[:deploy_to]}/current/wp-content"
