@@ -13,7 +13,7 @@ node[:deploy].each do |app_name, deploy|
     end
 
     variables(
-      :host => ("paulsen-mysql.c0vzgh2tlf0w.us-west-2.rds.amazonaws.com")
+      :host => ([:rdshos])
     )
 
   end
