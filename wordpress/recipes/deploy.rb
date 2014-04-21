@@ -13,7 +13,7 @@ node[:deploy].each do |app_name, deploy|
     end
 
     variables(
-      :host => ([:rdshos])
+      :host => node[:rds][:endpoint]
     )
 
   end
